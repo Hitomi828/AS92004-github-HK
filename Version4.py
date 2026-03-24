@@ -3,7 +3,7 @@
 #version 2 (13/3/26)
 #version 3 (16/3/26)
 #vertion 4 (17/03/26)
-#.
+#version 5 (24/03/26)
 
 ADOULTAGE = 18
 
@@ -91,9 +91,9 @@ def age_check(age):
         print("NO you are so young...go home and sleep.")
         exit()
     else:
-        ready = cleaned_input(input("Are you ready to play????"))
+        ready = cleaned_input(input("Are you ready to play???? : "))
         if ready == "yes":
-            print("perfect lets play!")
+            print("perfect lets start!")
             time.sleep(1.5)
             clear_text()
         else:
@@ -101,11 +101,11 @@ def age_check(age):
             exit()
 
 def show_instructions():
-    print("")
+    print("Hi. This quiz is about spase. \n You can choose difficulty.. ")
 
 def ask_show_instructions():
     while True: 
-        answer = input("Do you want to see the instructions? yes/no " ).lower().strip() 
+        answer = input("Do you want to see the instructions? :  " ).lower().strip() 
         answer = cleaned_input(answer)
 
         if answer in ["yes","y"]:
@@ -121,8 +121,32 @@ def ready_to_play():
     answer = cleaned_input(input("Are you ready to play?"))
     return answer in ["yes","y"]
 
+
+
+def choose_difficulty():
+    while True:
+        print("Choose difficulty :")
+        print("1. EASY (10 questions)")
+        print("2. HARD (20 questions)")
+        choice = input("Enter 1 or 2 : ").strip()
+
+        if choice == "1":
+            return 10
+        elif choice == "2":
+            return 20
+        else:
+            print("Invaild choice. Please enter 1 or 2. ")
+
+
 def play_round():
-    pass
+    index = random.randint(0, len(questions) - 1)
+    print(questions[index])
+    user_answer = input("Your answer : ")
+
+    if user_answer.lower().strip() == answers[index].lower().strip():
+        print("Thats correct!!!")
+    else:
+        print("Humm its rong.... Correct answer is {answers[index]} ")
 
 
 
@@ -132,14 +156,22 @@ def main():
     age_check(age)
 
 
-
     ask_show_instructions()
     
-    while True:
-        if ready_to_play():
-            play_round()
-        else:
-            break
+    total_questions = choose_difficulty()
+
+    for i in range(total_questions):
+        print(f"Question {i+1}:")
+        play_round()
+        print()
+
+    print("Thank you fpor playing!!")
+
+    #while True:
+        #if ready_to_play():
+            #play_round()
+        #else:
+            #break
 
 
 main()
