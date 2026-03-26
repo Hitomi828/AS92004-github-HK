@@ -5,6 +5,7 @@
 #vertion 4 (17/03/26)
 #version 5 (24/03/26)
 #version 6 (26/03/26)
+#version 7 (27/03/26)
 
 ADOULTAGE = 18
 
@@ -50,11 +51,11 @@ answers = [
     ["Ice"],
     ["About 8 minutes","8","8 minutes"],
     ["Einstein"],
-    ["A black hole","boack hole"],
+    ["A black hole","black hole"],
     ["Copernicus"],
     ["Apollo program","apollo"],
     ["Galileo Galilei","Galileo"],
-    ["2.5 million light-years"],
+    ["2.5 million light-years","2.5 million"],
     ["Neil Armstrong","armstrong"],
 ]
 
@@ -69,7 +70,10 @@ def clear_text():
 
 #Welcome text
 def welcome_text():
-    name = input("Hello please tell me your name : ")
+    print("""
+█░█ █▀▀ █░░ █░░ █▀█   █░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀   ▀█▀ █▀█   █░█ █▄░█ █ █░█ █▀▀ █▀█ █▀ █▀▀   █▀█ █░█ █ ▀█
+█▀█ ██▄ █▄▄ █▄▄ █▄█   ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄   ░█░ █▄█   █▄█ █░▀█ █ ▀▄▀ ██▄ █▀▄ ▄█ ██▄   ▀▀█ █▄█ █ █▄""")
+    name = input("\nPlease tell me your name : ")
     return name
 
 def welcome_text2(name):
@@ -89,9 +93,11 @@ def age_check(age):
         print("NO you are so young...go home and sleep.")
         exit()
     else:
-        ready = cleaned_input(input("Are you ready to play???? : "))
+        ready = cleaned_input(input("\nAre you ready to play???? (yes/no) : "))
         if ready == "yes":
-            print("perfect lets start!")
+            print("""
+█▀█ █▀▀ █▀█ █▀▀ █▀▀ █▀▀ ▀█▀   █░░ █▀▀ ▀█▀ █▀   █▀ ▀█▀ ▄▀█ █▀█ ▀█▀ █
+█▀▀ ██▄ █▀▄ █▀░ ██▄ █▄▄ ░█░   █▄▄ ██▄ ░█░ ▄█   ▄█ ░█░ █▀█ █▀▄ ░█░ ▄""")
             time.sleep(1.5)
             clear_text()
         else:
@@ -99,11 +105,11 @@ def age_check(age):
             exit()
 
 def show_instructions():
-    print("Hi. This quiz is about spase. \n You can choose difficulty.. ")
+    print("\nHi. This quiz is about universe. \nAll quiz is from : https://ichigo-drill.jp/quiz-universe \nYou can choose difficulty.. ")
 
 def ask_show_instructions():
     while True: 
-        answer = input("Do you want to see the instructions? :  " ).lower().strip() 
+        answer = input("\nDo you want to see the instructions? (yes/no) :  " ).lower().strip() 
         answer = cleaned_input(answer)
 
         if answer in ["yes","y"]:
@@ -121,28 +127,36 @@ def ready_to_play():
 
 def choose_difficulty():
     while True:
-        print("Choose difficulty :")
-        print("1. EASY (10 questions)")
-        print("2. HARD (20 questions)")
-        choice = input("Enter 1 or 2 : ").strip()
+        print("\nChoose difficulty :")
+        print("1. EASY   (10 questions)")
+        print("2. MIDIUM (15 questions)")
+        print("3. HARD   (20 questions)")
+        choice = input("Enter 1 or 2 or 3 : ").strip()
 
         if choice == "1":
             return 10
         elif choice == "2":
+            return 15
+        elif choice == "3":
             return 20
         else:
-            print("Invaild choice. Please enter 1 or 2. ")
-
+            print("Invaild choice. Please enter 1 or 2 or 3. ")
+        
 def play_round(index):
     print(questions[index])
     user_answer = cleaned_input(input("Your answer : "))
+    time.sleep(1.5)
+    clear_text()
     
     correct_list = [cleaned_input(a) for a in answers[index]]
 
     if user_answer in correct_list:
             print("Thats correct!!!")
+            return True, user_answer
     else:
             print(f"Humm its rong.... Correct answer is {answers[index][0]} ")
+            return False, user_answer
+    
 
 
 def main():
@@ -154,16 +168,51 @@ def main():
     
     total_questions = choose_difficulty()
 
+    score = 0
+    history = []
+
     for i in range(total_questions):
         print(f"Question {i+1}:")
-        play_round(i)
+        correct, user_answer = play_round(i)
+
+        if correct:
+            score += 1
+
+        history.append ({
+            "question": questions [i],
+            "your_answer": user_answer,
+            "correct_answer": answers[i][0],
+            "result": "Correct" if correct else "Wrong"
+        })
+
+        print()
+
+    print(f"{name}, you got {score} out of {total_questions} correct ")
+
+
+    show = cleaned_input(input("Do you want to see the result history? (yes/no): "))
+
+    if show != "yes":
+        print("OK! Thank you for playing!!!")
+        return
+
+
+    print("\n-------HISTORY-------\n")
+
+    for item in history:
+        print(f"Q: {item['question']}")
+        print(f"Your answer: {item['your_answer']}")
+
+        if item["result"] == "Correct":
+            print(f"Result: Correct!")
+        else:
+            print(f"Result: Wrong… Correct answer was: {item['correct_answer']}")
+
         print()
 
     print("Thank you fpor playing!!")
 
-
 main()
-
 
 #Who was the first person to use a telescope for stargazing? Galileo Galilei
 #Which planet in the solar system is farthest from the Sun? Neptune
