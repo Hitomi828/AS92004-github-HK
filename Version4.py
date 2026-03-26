@@ -1,13 +1,13 @@
 #AS92004 Hitomi Kajihara
-#version 1 (10/3/26)
-#version 2 (13/3/26)
-#version 3 (16/3/26)
+#version 1 (10/03/26)
+#version 2 (13/03/26)
+#version 3 (16/03/26)
 #vertion 4 (17/03/26)
 #version 5 (24/03/26)
+#version 6 (26/03/26)
 
 ADOULTAGE = 18
 
-import random
 import time
 import os
 import string
@@ -35,30 +35,28 @@ questions = [
     "20, Who was the first person to walk on the Moon? : ",
 ]
 
-
 answers = [
-    "Neptune",
-    "About 365 days",
-    "Jupiter",
-    "Blue",
-    "About 27 days",
-    "100 km",
-    "Nitrogen",
-    "Venus",
-    "Jupiter",
-    "One-sixth",
-    "Mars",
-    "Ice",
-    "About 8 minutes",
-    "Einstein",
-    "A black hole",
-    "Copernicus",
-    "Apollo program",
-    "Galileo Galilei",
-    "2.5 million light-years",
-    "Neil Armstrong",
+    ["Neptune"],
+    ["About 365 days","365","365 days",],
+    ["Jupiter"],
+    ["Blue"],
+    ["About 27 days","27","27 days"],
+    ["100 km","100"],
+    ["Nitrogen"],
+    ["Venus"],
+    ["Jupiter"],
+    ["One-sixth","1/6","one sixth"],
+    ["Mars"],
+    ["Ice"],
+    ["About 8 minutes","8","8 minutes"],
+    ["Einstein"],
+    ["A black hole","boack hole"],
+    ["Copernicus"],
+    ["Apollo program","apollo"],
+    ["Galileo Galilei","Galileo"],
+    ["2.5 million light-years"],
+    ["Neil Armstrong","armstrong"],
 ]
-
 
 def cleaned_input(user_input: str) -> str:
      cleaned = user_input.lower()
@@ -121,8 +119,6 @@ def ready_to_play():
     answer = cleaned_input(input("Are you ready to play?"))
     return answer in ["yes","y"]
 
-
-
 def choose_difficulty():
     while True:
         print("Choose difficulty :")
@@ -137,17 +133,16 @@ def choose_difficulty():
         else:
             print("Invaild choice. Please enter 1 or 2. ")
 
-
-def play_round():
-    index = random.randint(0, len(questions) - 1)
+def play_round(index):
     print(questions[index])
-    user_answer = input("Your answer : ")
+    user_answer = cleaned_input(input("Your answer : "))
+    
+    correct_list = [cleaned_input(a) for a in answers[index]]
 
-    if user_answer.lower().strip() == answers[index].lower().strip():
-        print("Thats correct!!!")
+    if user_answer in correct_list:
+            print("Thats correct!!!")
     else:
-        print("Humm its rong.... Correct answer is {answers[index]} ")
-
+            print(f"Humm its rong.... Correct answer is {answers[index][0]} ")
 
 
 def main():
@@ -155,23 +150,16 @@ def main():
     age = welcome_text2(name)
     age_check(age)
 
-
     ask_show_instructions()
     
     total_questions = choose_difficulty()
 
     for i in range(total_questions):
         print(f"Question {i+1}:")
-        play_round()
+        play_round(i)
         print()
 
     print("Thank you fpor playing!!")
-
-    #while True:
-        #if ready_to_play():
-            #play_round()
-        #else:
-            #break
 
 
 main()
